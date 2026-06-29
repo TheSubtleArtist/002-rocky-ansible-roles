@@ -1,0 +1,75 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#############
+# VARIABLES #
+#############
+
+BOX_IMAGE="generic/rocky9"
+
+###################
+# KEY GENERATION  #
+# #################
+
+# provides utilities for copying, moving, deleting, and creating files and directories
+require 'fileutils'
+
+SSH_KEY_PATH = File.join(__dir__, "vagrant", ".ssh")
+SSH_KEY_PRIVATE = File.join(SSH_KEY_PATH, "ansible_lab")
+SSH_KEY_PUBLIC = "#{SSH_KEY_PRIVATE}.pub"
+
+FileUtils.mkdir_p(SSH_KEY_PATH)
+
+unless File.exist?(SSH_KEY_PRIVATE)
+    system(
+      "ssh-keygen",
+      "-t", "ed25519",
+      "-f", SSH_KEY_PRIVATE,
+      "-N", "",
+      "-C", "vagrant-ansible-lab"
+    )  
+end
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = BOX_IMAGE
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+  config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+     vb.gui = false
+   end
+
+    managed = [
+    { name: "managed-node-01", ip: "192.168.56.11", memory: 1024, cpus: 1 }
+    ]
+  managed.each do |srv|
+    config.vm.define srv[:name], autostart: true do |node|
+      node.vm.hostname = srv[:name]
+      node.vm.network "private_network", ip: srv[:ip]
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = srv[:name]
+        vb.memory = srv[:memory]
+        vb.cpus = srv[:cpus]
+      end
+      node.vm.provision "shell",
+        path: "scripts/deploy-public-key.sh",
+        privileged:false
+      end
+  end
+
+   config.vm.define "controller-201" do |controller|
+      controller.vm.hostname = "ansible-controller"
+      controller.vm.network "private_network", ip: "192.168.56.10"
+      controller.vm.provider "virtualbox" do |vb|
+                vb.name = "ansible-controller"
+                vb.memory = 2048
+                vb.cpus = 2
+      end
+      controller.vm.provision "shell",
+        path: "scripts/bootstrap-ansible-controller.sh",
+        privileged: false
+      controller.vm.provision "shell",
+        path: "scripts/deploy-private-key.sh",
+        privileged: false
+      end
+end
