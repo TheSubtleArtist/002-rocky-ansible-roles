@@ -6,6 +6,8 @@
 #############
 
 BOX_IMAGE="generic/rocky9"
+PROJECT_ID="2"
+
 
 ###################
 # KEY GENERATION  #
@@ -39,10 +41,10 @@ Vagrant.configure("2") do |config|
      vb.gui = false
    end
 
-    managed = [
+MANAGED_NODES = [
     { name: "managed-node-01", ip: "192.168.56.11", memory: 1024, cpus: 1 }
     ]
-  managed.each do |srv|
+  MANAGED_NODES.each do |srv|
     config.vm.define srv[:name], autostart: true do |node|
       node.vm.hostname = srv[:name]
       node.vm.network "private_network", ip: srv[:ip]
@@ -57,9 +59,10 @@ Vagrant.configure("2") do |config|
       end
   end
 
-   config.vm.define "controller-201" do |controller|
-      controller.vm.hostname = "ansible-controller"
-      controller.vm.network "private_network", ip: "192.168.56.10"
+   CONTROLLER = { name: "controller-201", ip: "192.168.56.10", memory: 2048, cpus: 2 }
+   config.vm.define CONTROLLER[:name] do |controller|
+      controller.vm.hostname = CONTROLLER[:name]
+      controller.vm.network "private_network", ip: CONTROLLER[:ip]
       controller.vm.provider "virtualbox" do |vb|
                 vb.name = "ansible-controller"
                 vb.memory = 2048
