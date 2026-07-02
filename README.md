@@ -2,14 +2,10 @@
 
 Refactor the Project 001 baseline into a reusable Ansible role structure with separate common, controller, and managed-node configuration logic.
 
-
 ## Repository Structure
 
 ```text
 002-rocky-ansible-roles/
-├── README.md
-├── .gitignore
-├── Vagrantfile
 ├── ansible/
 │   ├── inventory-002.ini
 │   ├── site.yml
@@ -30,13 +26,19 @@ Refactor the Project 001 baseline into a reusable Ansible role structure with se
 │           │   └── main.yml
 │           └── tasks/
 │               └── main.yml
+├── evidence/
+│   └── validation-002-output.txt  
 ├── scripts/
 │   ├── bootstrap-ansible-controller.sh
 │   ├── deploy-private-key.sh
 │   ├── deploy-public-key.sh
-│   └── validation.sh
-└── evidence/
-    └── validation-002-output.txt
+│   └── validation.sh├── README.md
+├── vagrant/.ssh
+│   ├── ansible_lab
+│   └── ansible_lab.pub
+├── .gitignore
+├── README.md
+└── Vagrantfile
 ```
 
 ## Naming Conventions
