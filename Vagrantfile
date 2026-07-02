@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
    end
 
 MANAGED_NODES = [
-    { name: "managed-node-01", ip: "192.168.56.11", memory: 1024, cpus: 1 }
+    { name: "managed-201", ip: "192.168.56.11", memory: 1024, cpus: 1 }
     ]
   MANAGED_NODES.each do |srv|
     config.vm.define srv[:name], autostart: true do |node|
@@ -64,9 +64,9 @@ MANAGED_NODES = [
       controller.vm.hostname = CONTROLLER[:name]
       controller.vm.network "private_network", ip: CONTROLLER[:ip]
       controller.vm.provider "virtualbox" do |vb|
-                vb.name = "ansible-controller"
-                vb.memory = 2048
-                vb.cpus = 2
+                vb.name = CONTROLLER[:name]
+                vb.memory = CONTROLLER[:memory]
+                vb.cpus = CONTROLLER[:cpus]
       end
       controller.vm.provision "shell",
         path: "scripts/bootstrap-ansible-controller.sh",
