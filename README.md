@@ -204,34 +204,3 @@ managed-201 | SUCCESS => {
 
 This confirms that the Ansible controller can reach and manage the target node over SSH using the generated lab key pair.
 
-### 12. Run the baseline playbook
-
-Run the baseline playbook after basic Ansible connectivity succeeds.
-
-```bash
-ansible-playbook -i /vagrant/ansible/inventory-001.ini /vagrant/ansible/baseline-001.yml
-```
-
-Successful completion confirms that the controller can execute a playbook against the managed node.
-
-## 13. Run validation and capture evidence
-
-From the ansible-controller run `/vagrant/scripts/validation.sh`
-
-## Validation Evidence
-
-The validation script runs ansible/validate-001.yml and captures the output in evidence/validation-001-output.txt.
-
-- controller inventory group exists
-- managed inventory group exists
-- lab inventory group exists
-- Ansible is available on the controller
-- lab private key exists on the controller
-- controller can ping managed node over the private network
-- managed node is Rocky Linux 9
-- expected packages are installed
-- managed node hostname is managed-node-01
-
-## Security Notes
-
-The project intentionallly leaves out all hardening.
