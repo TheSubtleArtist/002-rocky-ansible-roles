@@ -1,0 +1,10 @@
+---
+
+# The default variables for the common role
+
+common_packages:
+  - python3
+  - python3-pip
+  - nano
+  - tree
+  - git
