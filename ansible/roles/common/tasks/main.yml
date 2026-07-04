@@ -1,0 +1,12 @@
+---
+
+# Actions performed by the common role
+
+- name: Update dnf package metadata
+  ansible.builtin.dnf:
+    update_cache: true
+
+- name: Install common packages
+  ansible.builtin.dnf:
+    name: "{{ common_packages }}"
+    state: present
