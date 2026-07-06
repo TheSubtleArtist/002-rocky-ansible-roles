@@ -1,0 +1,9 @@
+
+PLAY [Test controller role] ****************************************************
+
+TASK [controller : Install controller-specific packages] ***********************
+changed: [controller-201]
+
+PLAY RECAP *********************************************************************
+controller-201             : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
