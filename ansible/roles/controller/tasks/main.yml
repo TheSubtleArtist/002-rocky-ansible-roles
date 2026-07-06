@@ -1,0 +1,6 @@
+---
+
+- name: Install controller-specific packages
+  package:
+    name: "{{ controller_packages }}"
+    state: present

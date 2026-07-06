@@ -1,0 +1,4 @@
+---
+
+controller_packages:
+  - ansible-core

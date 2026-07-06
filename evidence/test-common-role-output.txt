@@ -1,0 +1,15 @@
+
+PLAY [Test common role] ********************************************************
+
+TASK [common : Update dnf package metadata] ************************************
+ok: [controller-201]
+ok: [managed-201]
+
+TASK [common : Install common packages] ****************************************
+changed: [controller-201]
+changed: [managed-201]
+
+PLAY RECAP *********************************************************************
+controller-201             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+managed-201                : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

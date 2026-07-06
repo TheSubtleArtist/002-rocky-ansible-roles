@@ -204,8 +204,6 @@ managed-201 | SUCCESS => {
 
 This confirms that the Ansible controller can reach and manage the target node over SSH using the generated lab key pair.
 
-## Test the Common Role
-
 ### 11. Test the Common Role
 
 After the VMs are running, test the `common` Ansible role from the Ansible controller.
@@ -218,6 +216,7 @@ vagrant ssh controller-201
 /vagrant/scripts/test-common-roll.sh
 
 ```
+
 `test-common-roll.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
 
 Expected Results:
@@ -226,3 +225,4 @@ Expected Results:
 failed=0
 unreachable=0
 ```
+

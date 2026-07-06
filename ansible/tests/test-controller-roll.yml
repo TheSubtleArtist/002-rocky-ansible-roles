@@ -1,0 +1,8 @@
+---
+
+- name: Test controller role
+  hosts: controller
+  gather_facts: false
+  become: true
+  roles:
+    - controller
