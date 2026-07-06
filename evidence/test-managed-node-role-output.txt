@@ -1,0 +1,12 @@
+
+PLAY [Test managed-node role] **************************************************
+
+TASK [managed_node : Ensure managed-node lab marker directory exists] **********
+changed: [managed-201]
+
+TASK [managed_node : Create managed-node role marker file] *********************
+changed: [managed-201]
+
+PLAY RECAP *********************************************************************
+managed-201                : ok=2    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

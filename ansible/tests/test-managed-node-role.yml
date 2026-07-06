@@ -1,7 +1,7 @@
 ---
 
 - name: Test managed-node role
-  hosts: managed_nodes
+  hosts: managed
   gather_facts: false
   become: true
   roles:

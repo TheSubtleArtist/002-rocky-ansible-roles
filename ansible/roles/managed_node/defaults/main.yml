@@ -1,6 +1,4 @@
 ---
-
----
 # Marker files are small validation artifacts created by automation.
 # In this project, the managed_node role does not yet have a real
 # managed-node-specific package or service to configure.
