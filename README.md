@@ -213,7 +213,7 @@ SSH into the controller:
 ```bash
 vagrant ssh controller-201
 
-/vagrant/scripts/test-common-roll.sh
+/vagrant/scripts/test-common-role.sh
 
 ```
 
@@ -235,7 +235,7 @@ SSH into the controller:
 ```bash
 vagrant ssh controller-201
 
-/vagrant/scripts/test-controller-roll.sh
+/vagrant/scripts/test-controller-role.sh
 
 ```
 
@@ -258,7 +258,7 @@ SSH into the controller:
 ```bash
 vagrant ssh controller-201
 
-/vagrant/scripts/test-controller-roll.sh
+/vagrant/scripts/test-controller-role.sh
 
 ```
 
