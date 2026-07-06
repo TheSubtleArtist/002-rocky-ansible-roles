@@ -1,0 +1,18 @@
+---
+
+---
+# Marker files are small validation artifacts created by automation.
+# In this project, the managed_node role does not yet have a real
+# managed-node-specific package or service to configure.
+#
+# Rather than adding unnecessary packages just to make the role "do something,"
+# this role creates a harmless marker file on managed nodes.
+#
+# The marker file gives us a simple way to prove that:
+#   1. the managed_node role executed successfully
+#   2. the role targeted managed nodes only
+#   3. later validation can check for the expected file and content
+
+managed_node_marker_dir: /etc/ansible-lab
+managed_node_marker_file: /etc/ansible-lab/managed-node-role.txt
+managed_node_marker_content:  This system was configured by the managed_node role in Project 002.

@@ -1,0 +1,25 @@
+---
+# Create a dedicated lab directory for marker files.
+# This directory is used only for project validation evidence.
+# It is not intended to represent a production application directory.
+
+- name: Ensure managed-node lab marker directory exists
+  ansible.builtin.file:
+    path: "{{ managed_node_marker_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+# Create a marker file proving that the managed_node role ran.
+# This is useful at this stage because the role is intentionally simple.
+# The marker helps validate role targeting without adding unnecessary packages,
+# services, or configuration that the managed node does not actually need.
+
+- name: Create managed-node role marker file
+  ansible.builtin.copy:
+    dest: "{{ managed_node_marker_file }}"
+    content: "{{ managed_node_marker_content }}"
+    owner: root
+    group: root
+    mode: "0644"

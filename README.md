@@ -226,3 +226,24 @@ failed=0
 unreachable=0
 ```
 
+### 12. Test the Controller Role
+
+After the VMs are running, test the `controller` Ansible role from the Ansible controller.
+
+SSH into the controller:
+
+```bash
+vagrant ssh controller-201
+
+/vagrant/scripts/test-controller-roll.sh
+
+```
+
+`test-controller-roll.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
+
+Expected Results:
+
+```text
+failed=0
+unreachable=0
+```
