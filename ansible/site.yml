@@ -1,0 +1,21 @@
+---
+- name: Apply common baseline to all lab systems
+  hosts: lab
+  gather_facts: false
+  become: true
+  roles:
+    - common
+
+- name: Apply controller-specific configuration
+  hosts: controller
+  gather_facts: false
+  become: true
+  roles:
+    - controller
+
+- name: Apply managed-node-specific configuration
+  hosts: managed
+  gather_facts: false
+  become: true
+  roles:
+    - managed_node

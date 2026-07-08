@@ -7,33 +7,41 @@ Refactor the Project 001 baseline into a reusable Ansible role structure with se
 ```text
 002-rocky-ansible-roles/
 ├── ansible/
-│   └── roles/
-│       ├── common/
-│       │   ├── defaults/
-│       │   │   └── main.yml
-│       │   └── tasks/
-│       │       └── main.yml
-│       ├── controller/
-│       │   ├── defaults/
-│       │   │   └── main.yml
-│       │   └── tasks/
-│       │       └── main.yml
-│       └── managed_node/
-│           ├── defaults/
-│           │   └── main.yml
-│           └── tasks/
-│               └── main.yml
+│   ├── roles/
+│   |   ├── common/
+│   |   │   ├── defaults/
+│   |   │   │   └── main.yml
+│   |   │   └── tasks/
+│   |   │       └── main.yml
+│   |   ├── controller/
+│   |   │   ├── defaults/
+│   |   │   │   └── main.yml
+│   |   │   └── tasks/
+│   |   │       └── main.yml
+│   |   └── managed_node/
+│   |       ├── defaults/
+│   |       │   └── main.yml
+│   |       └── tasks/
+│   |           └── main.yml
+│   ├── tests/
+│   |   ├── test-common-role.yml
+│   |   ├── test-controller-role.yml
+│   |   └── test-managed-node-role.yml
 │   ├── inventory-002.ini
 │   ├── site.yml
-│   ├── validate-002.yml
+│   ├── validate.yml
 ├── evidence/
-│   └── validation-002-output.txt  
+│   ├── test-common-role-output.txt
+│   ├── test-controller-role-output.txt
+│   └── vtest-managed-node-role-output.txt
 ├── scripts/
 │   ├── bootstrap-ansible-controller.sh
 │   ├── deploy-private-key.sh
 │   ├── deploy-public-key.sh
+│   ├── test-common-role.sh
+│   ├── test-controller-role.sh
+│   ├── test-managed-node.sh
 │   └── validation.sh
-├── README.md
 ├── vagrant/.ssh
 │   ├── ansible_lab
 │   └── ansible_lab.pub
@@ -68,7 +76,7 @@ This confirms that the Vagrant configuration is syntactically valid before any V
 ### 2. Start the Nodes
 
 ```powershell
-vagrant up ansible-controller
+vagrant up
 ```
 
 This should create and start the controller VM only.
@@ -103,7 +111,7 @@ Expected result after starting only the controller:
 
 ```text
 controller-201    running
-manged-201        running
+managed-201       running
 ```
 
 ### 4. Access the Ansible controller
@@ -111,7 +119,7 @@ manged-201        running
 Connect to the controller VM.
 
 ```powershell
-vagrant ssh controller-201vag
+vagrant ssh controller-201
 ```
 
 Successful login confirms that the controller VM is reachable through Vagrant-managed SSH.
@@ -217,7 +225,7 @@ vagrant ssh controller-201
 
 ```
 
-`test-common-roll.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
+`test-common-role.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
 
 Expected Results:
 
@@ -239,7 +247,7 @@ vagrant ssh controller-201
 
 ```
 
-`test-controller-role.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
+`test-controller-role.sh` performs a repeatable development test of the controller role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
 
 Expected Results:
 
@@ -248,25 +256,25 @@ failed=0
 unreachable=0
 ```
 
-
 ### 13. Test the Managed Node Role
 
-After the VMs are running, test the `managed node` Ansible role from the Ansible controller.
+After the VMs are running, test the `managed_node` Ansible role from the Ansible controller.
 
 SSH into the controller:
 
 ```bash
 vagrant ssh controller-201
 
-/vagrant/scripts/test-controller-role.sh
-
+/vagrant/scripts/test-managed-node.sh
 ```
 
-`test-managed-node.sh` performs a repeatable development test of the common role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.
+`test-managed-node.sh` performs a repeatable development test of the `managed_node` role. It uses the project-level ansible.cfg, runs a syntax check, performs a check-mode preview, executes the role, and captures output in the evidence/ directory.  
 
-Expected Results:
+Expected results:
 
 ```text
 failed=0
 unreachable=0
 ```
+
+### 14. Test site.yml
