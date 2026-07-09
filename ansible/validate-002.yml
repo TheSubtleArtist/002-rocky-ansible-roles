@@ -1,0 +1,71 @@
+---
+- name: Validate common role results on all lab systems
+  hosts: lab
+  gather_facts: false
+  become: true
+
+    # Collect installed package information from the target host.
+    # manager: auto lets Ansible choose the correct package backend for the OS (dnf in this case).
+    # The results are stored in ansible_facts.packages and are used by later assert tasks to confirm required packages were actually installed.
+  tasks:
+    - name: Gather installed package facts and build a fact dictionary of installed packages.
+      ansible.builtin.package_facts:
+        manager: auto
+
+
+    - name: Validate common packages are installed
+      ansible.builtin.assert:
+        that:
+          - item in ansible_facts.packages
+        fail_msg: "Required common package is missing: {{ item }}"
+        success_msg: "Required common package is installed: {{ item }}"
+      loop: "{{ common_packages }}"
+
+- name: Validate controller role results
+  hosts: controller
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Gather installed package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Validate controller packages are installed
+      ansible.builtin.assert:
+        that:
+          - item in ansible_facts.packages
+        fail_msg: "Required controller package is missing: {{ item }}"
+        success_msg: "Required controller package is installed: {{ item }}"
+      loop: "{{ controller_packages }}"
+
+- name: Validate managed_node role results
+  hosts: managed
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Validate managed-node marker file exists
+      ansible.builtin.stat:
+        path: "{{ managed_node_marker_file }}"
+      register: managed_node_marker
+
+    - name: Assert managed-node marker file exists
+      ansible.builtin.assert:
+        that:
+          - managed_node_marker.stat.exists
+          - managed_node_marker.stat.isreg
+        fail_msg: "Managed-node marker file is missing or is not a regular file."
+        success_msg: "Managed-node marker file exists."
+
+    - name: Read managed-node marker file
+      ansible.builtin.slurp:
+        src: "{{ managed_node_marker_file }}"
+      register: managed_node_marker_content_actual
+
+    - name: Assert managed-node marker file contains expected content
+      ansible.builtin.assert:
+        that:
+          - managed_node_marker_content in (managed_node_marker_content_actual.content | b64decode)
+        fail_msg: "Managed-node marker file does not contain the expected content."
+        success_msg: "Managed-node marker file contains the expected content."

@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
+# If any command fails, print a clear error message before exiting.
+trap 'echo "ERROR: Managed Node role test failed. Review the output above and the evidence files."; exit 1' ERR
+
+#  https://docs.ansible.com/projects/ansible/latest/reference_appendices/config.html#avoiding-security-risks-with-ansible-cfg-in-the-current-directory
+export ANSIBLE_CONFIG=/vagrant/ansible.cfg
+
+mkdir -p /vagrant/evidence
+
 echo "Running site.yml syntax check"
 
 # --syntax-check parses the playbook and confirms the YAML and Ansible playbook structure are valid.
@@ -8,7 +18,7 @@ echo "Running site.yml syntax check"
 # It catches errors such as bad indentation, invalid playbook structure,
 # misspelled Ansible keywords, or malformed YAML before any system changes occur.
 
-ansible-playbook ansible/site.yml --syntax-check
+ansible-playbook /vagrant/ansible/site.yml --syntax-check
 
 echo "Running site.yml check mode preview"
 
@@ -21,7 +31,7 @@ echo "Running site.yml check mode preview"
 # It is not a substitute for a real execution test because some modules cannot
 # fully predict changes in check mode.
 
-ansible-playbook ansible/site.yml --check
+ansible-playbook /vagrant/ansible/site.yml --check
 
 echo "Running site.yml check mode preview with diff output"
 
@@ -34,4 +44,4 @@ echo "Running site.yml check mode preview with diff output"
 # When combined with --check, --diff helps preview what content would change
 # before the playbook is actually executed.
 
-ansible-playbook ansible/site.yml --check --diff
+ansible-playbook /vagrant/ansible/site.yml --check --diff

@@ -41,6 +41,7 @@ Refactor the Project 001 baseline into a reusable Ansible role structure with se
 │   ├── test-common-role.sh
 │   ├── test-controller-role.sh
 │   ├── test-managed-node.sh
+│   ├── test-site.sh
 │   └── validation.sh
 ├── vagrant/.ssh
 │   ├── ansible_lab
@@ -277,4 +278,13 @@ failed=0
 unreachable=0
 ```
 
-### 14. Test site.yml
+### 14. Test Full Role Orchestration with `site.yml`
+
+After the individual roles have been tested, run the full Ansible site playbook.
+
+The `site.yml` playbook is the main orchestration entry point for this project. It does not define the detailed role logic itself. Instead, it applies the completed roles to the correct inventory groups in the correct order:
+
+```text
+common role       -> all lab systems
+controller role   -> controller node only
+managed_node role -> managed node only
