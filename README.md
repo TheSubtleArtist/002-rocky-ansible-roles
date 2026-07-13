@@ -38,6 +38,7 @@ Refactor the Project 001 baseline into a reusable Ansible role structure with se
 │   ├── bootstrap-ansible-controller.sh
 │   ├── deploy-private-key.sh
 │   ├── deploy-public-key.sh
+│   ├── play-site-yml.sh
 │   ├── test-common-role.sh
 │   ├── test-controller-role.sh
 │   ├── test-managed-node.sh

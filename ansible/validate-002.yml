@@ -1,17 +1,21 @@
----
 - name: Validate common role results on all lab systems
   hosts: lab
   gather_facts: false
   become: true
 
-    # Collect installed package information from the target host.
-    # manager: auto lets Ansible choose the correct package backend for the OS (dnf in this case).
-    # The results are stored in ansible_facts.packages and are used by later assert tasks to confirm required packages were actually installed.
+  # Load the role default variables so validation checks the same values used
+  # by the role during configuration.
+  #
+  # This avoids duplicating package lists or marker file paths in the validation
+  # playbook. The validation playbook still does not run the role; it only reuses
+  # the role's variable definitions while independently checking the final system state.
+  vars_files:
+    - roles/common/defaults/main.yml
+
   tasks:
     - name: Gather installed package facts and build a fact dictionary of installed packages.
       ansible.builtin.package_facts:
         manager: auto
-
 
     - name: Validate common packages are installed
       ansible.builtin.assert:
@@ -25,6 +29,16 @@
   hosts: controller
   gather_facts: false
   become: true
+
+  # Load the role default variables so validation checks the same values used
+  # by the role during configuration.
+  #
+  # This avoids duplicating package lists or marker file paths in the validation
+  # playbook. The validation playbook still does not run the role; it only reuses
+  # the role's variable definitions while independently checking the final system state.
+
+  vars_files:
+    - roles/controller/defaults/main.yml
 
   tasks:
     - name: Gather installed package facts
@@ -43,6 +57,16 @@
   hosts: managed
   gather_facts: false
   become: true
+
+  # Load the role default variables so validation checks the same values used
+  # by the role during configuration.
+  #
+  # This avoids duplicating package lists or marker file paths in the validation
+  # playbook. The validation playbook still does not run the role; it only reuses
+  # the role's variable definitions while independently checking the final system state.
+  
+  vars_files:
+    - roles/managed_node/defaults/main.yml
 
   tasks:
     - name: Validate managed-node marker file exists
